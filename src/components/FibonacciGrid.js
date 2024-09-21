@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useMemo } from 'react';
 import FibonacciSquare from './FibonacciSquare'; 
 const fibonacciSequence = [1, 1, 2, 3, 5];   
 
@@ -7,7 +7,7 @@ const fibonacciSequence = [1, 1, 2, 3, 5];
 const FibonacciGrid = () => {
   const [time, setTime] = useState(new Date());
   const [inputTime, setInputTime] = useState('');
-  const [num, setNum] = useState(0); 
+  
   const handleInputChange = (e) => {
     setInputTime(e.target.value);
   };
@@ -27,33 +27,8 @@ const FibonacciGrid = () => {
   };
 
   const timeString = time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-  const getFibonacciColors = () => {
-    const hours = time.getHours() % 12;
-    const minutes = time.getMinutes();
   
-    const hourBlocks = calculateFibonacciBlocks(hours);
-    const minuteBlocks = calculateFibonacciBlocks(Math.floor(minutes / 5));
-  
-   
-  
-    return fibonacciSequence.map((value, index) => {
-       
-      const isBlockColor = hourBlocks.includes(index) && minuteBlocks.includes(index);
-  
-      if (isBlockColor) {
-        return 'blue';
-      } else if (hourBlocks.includes(index)) {
-        return 'red';
-      } else if (minuteBlocks.includes(index)) {
-        return 'green';
-      } else {
-        return 'white';
-      }
-    });
-  };
-
-    const calculateFibonacciBlocks = (num) => {
+  const calculateFibonacciBlocks = (num) => {
     let blocks = [];
     let remaining = num;
     
@@ -66,19 +41,38 @@ const FibonacciGrid = () => {
     } 
 
     return blocks;
-  };  
-   
+  }; 
+
+  const getFibonacciColors = useMemo(() => {
+    const hours = time.getHours() % 12;
+    const minutes = time.getMinutes();
   
+    const hourBlocks = calculateFibonacciBlocks(hours);
+    const minuteBlocks = calculateFibonacciBlocks(Math.floor(minutes / 5));
   
-  const colors = getFibonacciColors();
+    return fibonacciSequence.map((value, index) => {
+      const isBlockColor = hourBlocks.includes(index) && minuteBlocks.includes(index);
+  
+      if (isBlockColor) {
+        return 'blue';
+      } else if (hourBlocks.includes(index)) {
+        return 'red';
+      } else if (minuteBlocks.includes(index)) {
+        return 'green';
+      } else {
+        return 'white';
+      }
+    });
+  }, [time]); // Recalculate colors only if time changes
  
+  
   const handleNextClick = (increment) => {
     const newTime = new Date(time); 
     newTime.setMinutes(time.getMinutes() + increment * 5);  
     setTime(newTime);
    
   };
-
+  const colors = getFibonacciColors;
   return (
     <div>
     <h1>Fibonacci Clock</h1>
