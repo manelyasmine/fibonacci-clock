@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import FibonacciSquare from './FibonacciSquare'; 
-const fibonacciSequence = [1, 1, 2, 3, 5]; // Fibonacci sequence with 5 elements
-const maxFibonacciValue = Math.max(...fibonacciSequence);
+const fibonacciSequence = [1, 1, 2, 3, 5];   
 
 
 
@@ -79,7 +78,7 @@ const FibonacciGrid = () => {
   };
 
   const colors = getFibonacciColors();
-console.log("colors======>",colors)
+ 
   const handleNextClick = (increment) => {
     const newTime = new Date(time);
     console.log("handleNextClick===>",increment,newTime,time);
