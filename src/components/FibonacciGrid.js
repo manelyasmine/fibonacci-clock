@@ -1,4 +1,4 @@
-import React, { useState,useMemo } from 'react';
+import React, { useState } from 'react';
 import FibonacciSquare from './FibonacciSquare'; 
 const fibonacciSequence = [1, 1, 2, 3, 5];   
 
